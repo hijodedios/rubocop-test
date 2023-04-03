@@ -6,8 +6,8 @@ Este es un proyecto de ejemplo para aprender a utilizar Rubocop en un proyecto d
 
 ## Requerimientos
 
-- Ruby 2.6.6
-- Rails 6.0.3.2
+- Ruby 3.1.2
+- Rails 7.0.4.2
 - PostgreSQL
 - Docker
 
