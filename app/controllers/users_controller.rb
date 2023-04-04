@@ -24,14 +24,8 @@ class UsersController < ApplicationController
 
     @user = User.new(user_params)
     
-    email_to_valid = user_params[:email]
-    
-    regex_str = '^[^\s@]+@[^\s@]+\.[^\s@]+$'
-
-    valid_email = eval("/#{regex_str}/").match?(email_to_valid)
-  
     respond_to do |format|
-      if valid_email && @user.save
+      if valid_email?(user_params[:email]) && @user.save
         format.html { redirect_to user_url(@user), notice: "User was successfully created." }
         format.json { render :show, status: :created, location: @user }
       else
@@ -39,7 +33,6 @@ class UsersController < ApplicationController
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
-
     end
   end
 
