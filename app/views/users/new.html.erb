@@ -3,7 +3,13 @@
 <%= render "form", user: @user %>
 
 <br>
-
+<div>
+  <div>
+    <% if @error %>
+      <span>Email no valido, intente nuevamente</span>
+    <% end %>
+  </div>
+</div>
 <div>
   <%= link_to "Back to users", users_path %>
 </div>

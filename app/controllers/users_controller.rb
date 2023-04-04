@@ -4,8 +4,6 @@ class UsersController < ApplicationController
   # GET /users or /users.json
   def index
     @users = User.all
-    method_message = "puts 'Users found: #{@users.count}'"
-    eval(method_message)
   end
 
   # GET /users/1 or /users/1.json
@@ -23,16 +21,25 @@ class UsersController < ApplicationController
 
   # POST /users or /users.json
   def create
-    @user = User.new(user_params)
 
+    @user = User.new(user_params)
+    
+    email_to_valid = user_params[:email]
+    
+    regex_str = '^[^\s@]+@[^\s@]+\.[^\s@]+$'
+
+    valid_email = eval("/#{regex_str}/").match?(email_to_valid)
+  
     respond_to do |format|
-      if @user.save
+      if valid_email && @user.save
         format.html { redirect_to user_url(@user), notice: "User was successfully created." }
         format.json { render :show, status: :created, location: @user }
       else
+        @error = true
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
+
     end
   end
 
@@ -68,5 +75,10 @@ class UsersController < ApplicationController
     # Only allow a list of trusted parameters through.
     def user_params
       params.require(:user).permit(:name, :email)
+    end
+    def valid_email?(email)
+      # Expresión regular para validar el formato del correo electrónico
+      email_regex = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
+      email_regex.match?(email)
     end
 end
